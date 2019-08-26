@@ -19,29 +19,24 @@ namespace JwtAuthAspNetCore22.Controllers
             return new string[] { "value1", "value2" };
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+
+        /// <summary>
+        /// This is method to read Claims from JWT Token
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("get-my-id")]
+        public ActionResult<string> GetMyId()
         {
-            return "value";
+            var idClaim = User.Claims.FirstOrDefault(x => x.Type.ToString().Equals("id", StringComparison.InvariantCultureIgnoreCase));
+            if (idClaim != null)
+            {
+                return Ok($"This is your id: {idClaim.Value}");
+            }
+
+            return BadRequest("No Claim Found");
+
         }
 
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
 
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }

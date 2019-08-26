@@ -69,10 +69,11 @@ namespace JwtAuthAspNetCore22.Controllers
             {
                 var claim = new[] {
                     new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
+                    new Claim("id",user.Id),
                    // new Claim(JwtRegisteredClaimNames.AuthTime, Convert.ToString(seconds)),
                     new Claim(ClaimTypes.Role, "Admin"),
-                new Claim(ClaimTypes.Role, "Reader"),
-                new Claim("Custom_Claim", "Custom_Claim")
+                    new Claim(ClaimTypes.Role, "Reader"),
+                   new Claim("Custom_Claim", "Custom_Claim")
             };
 
                 var signinKey = new SymmetricSecurityKey(
@@ -85,7 +86,7 @@ namespace JwtAuthAspNetCore22.Controllers
                   audience: _configuration["Jwt:Site"],
                   expires: DateTime.UtcNow.AddMinutes(expiryInMinutes),
                   signingCredentials: new SigningCredentials(signinKey, SecurityAlgorithms.HmacSha256)
-                  //,claims:claim
+                  ,claims:claim //add claims to token
                 );
 
                 return Ok(
@@ -104,6 +105,7 @@ namespace JwtAuthAspNetCore22.Controllers
         /// endpoint: verb:POST, url:https://localhost:6600/api/auth/token
         /// </summary>
         /// <returns></returns>
+        /// JWT Authorization in ASP.NET Core 2.1 Web API - C# https://www.youtube.com/watch?v=7tgLuJ__ZKU
         [HttpPost("token")]
         public ActionResult GetToken()
         {
@@ -141,6 +143,10 @@ namespace JwtAuthAspNetCore22.Controllers
                     expiration=token.ValidTo
                 });            
         }
+
+       
+
+
 
     }
 }
