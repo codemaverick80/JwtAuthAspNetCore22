@@ -48,7 +48,7 @@ namespace JwtAuthAspNetCore22
             .AddDefaultTokenProviders();
 
 
-
+            //// user will be authenticated with JWT schema
             services.AddAuthentication(option => {
                 option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -58,11 +58,12 @@ namespace JwtAuthAspNetCore22
                 options.RequireHttpsMetadata = true;
                 options.TokenValidationParameters = new TokenValidationParameters()
                 {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidAudience = Configuration["Jwt:Site"],
-                    ValidIssuer = Configuration["Jwt:Site"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:SigningKey"]))
+                    ValidateIssuer = true,                          //validate Issuer
+                    ValidateAudience = true,                        //validate Audience
+                    ValidateIssuerSigningKey=true,                  //validate issuer signing key
+                    ValidAudience = Configuration["Jwt:Site"],      //Audience is configure in appsetting.json
+                    ValidIssuer = Configuration["Jwt:Site"],        //Issuer is configure in appsetting.json
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:SigningKey"]))//SigningKey is configure in appsetting.json
                 };
             });
 
